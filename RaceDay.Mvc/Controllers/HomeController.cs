@@ -1,0 +1,3 @@
+using Microsoft.AspNetCore.Mvc;using RaceDay.Mvc.Services;using System.Text.Json;
+namespace RaceDay.Mvc.Controllers;
+public class HomeController(RaceDayApiClient api):Controller{public async Task<IActionResult> Index(){try{ViewBag.Events=await api.Get("api/events?from="+DateTime.UtcNow.ToString("O"));}catch{ViewBag.Events=JsonDocument.Parse("[]").RootElement;}return View();}public IActionResult Error()=>View();}

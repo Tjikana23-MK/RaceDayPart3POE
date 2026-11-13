@@ -1,0 +1,17 @@
+name: RaceDay Part 2 and Part 3 CI
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet restore RaceDay.sln
+      - run: dotnet build RaceDay.sln --no-restore --configuration Release
+      - run: dotnet test RaceDay.Tests/RaceDay.Tests.csproj --no-build --configuration Release

@@ -1,0 +1,15 @@
+services:
+  raceday-api:
+    build: ./RaceDay.Api
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__RaceDay: ${RACEDAY_DB_CONNECTION}
+      AzureBlobStorage__ConnectionString: ${AZURE_BLOB_CONNECTION}
+    ports: ["5000:8080"]
+  raceday-mvc:
+    build: .
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ApiSettings__BaseUrl: http://raceday-api:8080/
+    ports: ["8080:8080"]
+    depends_on: [raceday-api]

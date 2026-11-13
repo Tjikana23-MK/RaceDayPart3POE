@@ -1,0 +1,35 @@
+﻿USE RaceDayDB;
+GO
+
+SELECT
+    COLUMN_NAME,
+    DATA_TYPE,
+    IS_NULLABLE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'Users'
+ORDER BY ORDINAL_POSITION;
+GO
+
+USE RaceDayDB;
+GO
+
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+ORDER BY TABLE_NAME;
+GO
+
+USE RaceDayDB;
+GO
+
+IF OBJECT_ID('__EFMigrationsHistory', 'U') IS NOT NULL
+BEGIN
+    SELECT MigrationId, ProductVersion
+    FROM dbo.__EFMigrationsHistory
+    ORDER BY MigrationId;
+END
+ELSE
+BEGIN
+    PRINT 'The EF migrations history table does not exist.';
+END;
+GO

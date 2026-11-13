@@ -1,0 +1,160 @@
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Event details";
+
+    JsonElement e = (JsonElement)ViewBag.Event;
+
+    // Safely retrieve the event categories.
+    JsonElement cats = default;
+
+    bool hasCategories =
+        e.TryGetProperty("categories", out cats) &&
+        cats.ValueKind == JsonValueKind.Array;
+
+    // Event information.
+    string eventName = e.TryGetProperty("name", out var name)
+        ? name.GetString() ?? "Unnamed event"
+        : "Unnamed event";
+
+    string eventType = e.TryGetProperty("eventType", out var type)
+        ? type.GetString() ?? "Event"
+        : "Event";
+
+    string description = e.TryGetProperty("description", out var desc)
+        ? desc.GetString() ?? ""
+        : "";
+
+    string location = e.TryGetProperty("location", out var loc)
+        ? loc.GetString() ?? "Location unavailable"
+        : "Location unavailable";
+
+    string eventDate = e.TryGetProperty("eventDate", out var date)
+        && date.ValueKind == JsonValueKind.String
+            ? date.GetDateTime().ToString("dd MMM yyyy")
+            : "Date unavailable";
+
+    string distance = e.TryGetProperty("distanceKm", out var dist)
+        ? dist.ToString()
+        : "N/A";
+
+    int eventId = e.TryGetProperty("eventId", out var id)
+        ? id.GetInt32()
+        : 0;
+}
+
+<a href="/Participant" class="text-decoration-none">
+    ← All events
+</a>
+
+<div class="hero compact mt-3">
+
+    @if (e.TryGetProperty("bannerUrl", out var banner)
+        && banner.ValueKind == JsonValueKind.String
+        && !string.IsNullOrWhiteSpace(banner.GetString()))
+    {
+        <img src="@banner.GetString()"
+             alt="Event banner"
+             class="event-banner" />
+    }
+
+    <span class="eyebrow">@eventType</span>
+
+    <h1>@eventName</h1>
+
+    <p>@description</p>
+
+    <p>
+        📍 @location
+        · @eventDate
+        · @distance km
+    </p>
+
+</div>
+
+<h2 class="mt-4">Available categories</h2>
+
+<div class="row">
+
+    @if (hasCategories && cats.GetArrayLength() > 0)
+    {
+        @foreach (var c in cats.EnumerateArray())
+        {
+            int categoryId = c.TryGetProperty("categoryId", out var catId)
+            ? catId.GetInt32()
+            : 0;
+
+            string categoryName = c.TryGetProperty("name", out var catName)
+            ? catName.GetString() ?? "Unnamed category"
+            : "Unnamed category";
+
+            string categoryDistance = c.TryGetProperty("distanceKm", out var catDistance)
+            && catDistance.ValueKind != JsonValueKind.Null
+            ? catDistance.ToString() + " km"
+            : "Not specified";
+
+            string minimumAge = c.TryGetProperty("minimumAge", out var minAge)
+            && minAge.ValueKind != JsonValueKind.Null
+            ? minAge.ToString()
+            : "No minimum";
+
+            string maximumAge = c.TryGetProperty("maximumAge", out var maxAge)
+            && maxAge.ValueKind != JsonValueKind.Null
+            ? maxAge.ToString()
+            : "No maximum";
+
+            <div class="col-md-4 mb-3">
+
+                <div class="card event-card p-3 h-100">
+
+                    <h5>@categoryName</h5>
+
+                    <p>
+                        <strong>Distance:</strong>
+                        @categoryDistance
+                    </p>
+
+                    <p>
+                        <strong>Minimum age:</strong>
+                        @minimumAge
+                    </p>
+
+                    <p>
+                        <strong>Maximum age:</strong>
+                        @maximumAge
+                    </p>
+
+                    @if (eventId > 0 && categoryId > 0)
+                    {
+                        <form method="post" action="/Participant/Enrol">
+
+                            <input type="hidden"
+                                   name="eventId"
+                                   value="@eventId" />
+
+                            <input type="hidden"
+                                   name="categoryId"
+                                   value="@categoryId" />
+
+                            <button type="submit" class="btn btn-orange">
+                                Enrol now
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="alert alert-info">
+                No categories are currently available for this event.
+            </div>
+        </div>
+    }
+
+</div>

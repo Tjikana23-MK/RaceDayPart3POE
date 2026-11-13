@@ -1,0 +1,3 @@
+using Microsoft.AspNetCore.Mvc;using Microsoft.AspNetCore.Mvc.Filters;
+namespace RaceDay.Mvc.Filters;
+public class RequireRoleAttribute(params string[] roles):Attribute,IAsyncActionFilter{public async Task OnActionExecutionAsync(ActionExecutingContext context,ActionExecutionDelegate next){var s=context.HttpContext.Session;var role=s.GetString("Role");if(s.GetString("ApiCookie")==null){context.Result=new RedirectToActionResult("Login","Account",new{returnUrl=context.HttpContext.Request.Path});return;}if(roles.Length>0&&!roles.Contains(role)){context.Result=new RedirectToActionResult("Index","Home",new{});return;}await next();}}

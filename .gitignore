@@ -1,0 +1,11 @@
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+appsettings.Development.json
+TestResults/
+
+# Part 3 MVC
+**/wwwroot/uploads/
+.env

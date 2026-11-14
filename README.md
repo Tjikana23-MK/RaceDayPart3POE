@@ -2,7 +2,6 @@
 
 RaceDay is an ASP.NET Core Web API for South African road-running, walking and cycling events. This Part 2 implementation uses C#, Entity Framework Core (Code First), SQL Server, Swagger, cookie/session authentication, BCrypt password hashing, unit tests and GitHub Actions.
 
-> **Important:** review this code, run it on your machine, and make sure you can explain every class and security decision. The POE explicitly requires you to disclose AI assistance in a footnote/comments section when used. This package is a development starter, not proof that it has been run successfully on your particular computer. Do not claim tests or CI passed until you have run them and seen the green result.
 
 ## Roles
 - **Organiser:** create/update/delete their own events, manage categories, view enrolments for their events, and record/update results.

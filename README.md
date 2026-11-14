@@ -99,7 +99,7 @@ The assessment brief requires **at least 20 meaningful commits for Part 2**. Mak
 ## Video presentation
 Record an unlisted YouTube video in your own voice. Demonstrate the running API in Swagger, explain the code structure and EF Core model, register/login as both roles, show permitted and rejected role access, demonstrate event/category/enrolment/result endpoints, run unit tests, and show the successful GitHub Actions workflow. Add the actual unlisted link here:
 
-`[PASTE YOUR UNLISTED YOUTUBE LINK HERE]`
+`( https://youtu.be/avxoveJICGg?si=Of9cjpdzURjo0LJG )`
 
 ## AI-use disclosure
 The POE says AI use for planning, proofreading or coding must be disclosed briefly in a footnote or comments section. Adapt this disclosure honestly to describe your actual use and what you changed/verified.
